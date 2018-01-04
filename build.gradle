@@ -1,0 +1,27 @@
+group toolbox_infos.group
+version toolbox_infos.version
+
+apply plugin: 'java'
+
+sourceCompatibility = versions.sourceCompatibility
+
+buildscript {
+    ext.versions = [
+            sourceCompatibility: 1.8,
+            annotations        : '13.0',
+            junit              : '4.12',
+    ]
+    ext.toolbox_infos = [
+            group  : 'com.chimpim',
+            version: '1.0.0',
+    ]
+    allprojects {
+        repositories {
+            mavenCentral()
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}

@@ -1,0 +1,15 @@
+group toolbox_infos.group
+version toolbox_infos.version
+
+apply plugin: 'java'
+
+sourceCompatibility = versions.sourceCompatibility
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.jetbrains:annotations:' + versions.annotations
+    testImplementation 'junit:junit:' + versions.junit
+}
