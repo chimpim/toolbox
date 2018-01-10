@@ -18,12 +18,23 @@ public class ThreadUtils {
                         defaultThreadFactory("compute"));
     }
 
-    private static class ScheduledThreadHolder {
+    private static class ScheduledThreadPoolHolder {
         private static final ScheduledExecutorService instance =
                 Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors() + 1,
                         defaultThreadFactory("scheduled"));
     }
 
+    public static ExecutorService io() {
+        return IoThreadPoolHolder.instance;
+    }
+
+    public static ExecutorService compute() {
+        return ComputeThreadPoolHolder.instance;
+    }
+
+    public static ScheduledExecutorService scheduled() {
+        return ScheduledThreadPoolHolder.instance;
+    }
 
     public static void runOnIoThread(@NotNull Runnable runnable) {
         IoThreadPoolHolder.instance.execute(runnable);
@@ -34,15 +45,15 @@ public class ThreadUtils {
     }
 
     public static void schedule(@NotNull Runnable runnable, long delay, @NotNull TimeUnit timeUnit) {
-        ScheduledThreadHolder.instance.schedule(runnable, delay, timeUnit);
+        ScheduledThreadPoolHolder.instance.schedule(runnable, delay, timeUnit);
     }
 
     public static void scheduleWithFixedDelay(@NotNull Runnable runnable, long initialDelay, long period, @NotNull TimeUnit timeUnit) {
-        ScheduledThreadHolder.instance.scheduleWithFixedDelay(runnable, initialDelay, period, timeUnit);
+        ScheduledThreadPoolHolder.instance.scheduleWithFixedDelay(runnable, initialDelay, period, timeUnit);
     }
 
     public static void scheduleAtFixedRate(@NotNull Runnable runnable, long initialDelay, long delay, @NotNull TimeUnit timeUnit) {
-        ScheduledThreadHolder.instance.scheduleAtFixedRate(runnable, initialDelay, delay, timeUnit);
+        ScheduledThreadPoolHolder.instance.scheduleAtFixedRate(runnable, initialDelay, delay, timeUnit);
     }
 
     private static ThreadFactory defaultThreadFactory(String name) {

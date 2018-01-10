@@ -1,20 +1,23 @@
 package com.chimpim.toolbox.io;
 
 import java.io.*;
+import java.nio.charset.Charset;
 
 public class TextFileReader implements Closeable {
+    private static final Charset DEFAULT_CHARSET = Charset.forName("utf-8");
+
     private BufferedReader reader;
 
     public TextFileReader(String fileName) throws IOException {
-        this(fileName, "utf-8");
+        this(fileName, DEFAULT_CHARSET);
     }
 
-    public TextFileReader(String fileName, String encoding) throws IOException {
-        this(new File(fileName), encoding);
+    public TextFileReader(String fileName, Charset charset) throws IOException {
+        this(new File(fileName), charset);
     }
 
-    public TextFileReader(File file, String encoding) throws IOException {
-        reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), encoding));
+    public TextFileReader(File file, Charset charset) throws IOException {
+        reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), charset));
     }
 
 

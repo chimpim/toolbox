@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,35 +21,31 @@ public class DateUtils {
 
 
     private static class SingletonHolder {
-        private static DateUtils INSTANCE = new DateUtils();
+        private static DateUtils instance = new DateUtils();
     }
 
     public static Date parse(@NotNull String source, @NotNull String format) throws ParseException {
-        return SingletonHolder.INSTANCE.getDateFormat(format).parse(source);
+        return SingletonHolder.instance.getDateFormat(format).parse(source);
     }
 
     public static String format(@NotNull Date date, @NotNull String format) {
-        return SingletonHolder.INSTANCE.getDateFormat(format).format(date);
+        return SingletonHolder.instance.getDateFormat(format).format(date);
     }
 
-    public static long getTicks(@NotNull Date date) {
-        String format = format(date, "yyyy/MM/dd/HH/mm/ss");
-        String[] ds = format.split("/");
-        Calendar calStart = Calendar.getInstance();
-        calStart.set(1, 1, 3, 0, 0, 0);
-        Calendar calEnd = Calendar.getInstance();
-        calEnd.set(
-            /* year      */ Integer.parseInt(ds[0]),
-            /* month     */ Integer.parseInt(ds[1]),
-            /* date      */ Integer.parseInt(ds[2]),
-            /* hourOfDay */ Integer.parseInt(ds[3]),
-            /* minute    */ Integer.parseInt(ds[4]),
-            /* second    */ Integer.parseInt(ds[5]));
-        long epochStart = calStart.getTime().getTime();
-        long epochEnd = calEnd.getTime().getTime();
-        long all = epochEnd - epochStart;
-        long ticks = all / 10_000_000_000L;
+    public static long toTicks(@NotNull Date date) {
+        // 0001-01-03 00:00:00.000 的时间戳
+        long epochStart = -62135625600000L;
+        long epochEnd = date.getTime();
+        long ticks = (epochEnd - epochStart) * 10_000;
         return ticks;
+    }
+
+    public static Date fromTicks(long ticks) {
+        // 0001-01-03 00:00:00.000 的时间戳
+        long epochStart = -62135625600000L;
+        long epochEnd = (ticks / 10_000) + epochStart;
+        Date date = new Date(epochEnd);
+        return date;
     }
 
     @NotNull

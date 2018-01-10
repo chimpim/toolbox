@@ -2,4 +2,5 @@ rootProject.name = 'toolbox'
 include 'toolbox-io'
 include 'toolbox-concurrent'
 include 'toolbox-common'
+include 'toolbox-config'
 

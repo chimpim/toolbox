@@ -1,38 +1,39 @@
 package com.chimpim.toolbox.io;
 
 import java.io.*;
+import java.nio.charset.Charset;
 
 
 public class TextFileWriter implements Closeable {
-    private static final String DEFAULT_ENCODING = "utf-8";
+    private static final Charset DEFAULT_CHARSET = Charset.forName("utf-8");
     private BufferedWriter writer;
 
     public TextFileWriter(String fileName) throws IOException {
-        this(fileName, DEFAULT_ENCODING);
+        this(fileName, DEFAULT_CHARSET);
     }
 
-    public TextFileWriter(String fileName, String encoding) throws IOException {
-        this(new File(fileName), encoding, false);
+    public TextFileWriter(String fileName, Charset charset) throws IOException {
+        this(new File(fileName), charset, false);
     }
 
-    public TextFileWriter(String fileName, String encoding, boolean append) throws IOException {
-        this(new File(fileName), encoding, append);
+    public TextFileWriter(String fileName, Charset charset, boolean append) throws IOException {
+        this(new File(fileName), charset, append);
     }
 
     public TextFileWriter(File file) throws IOException {
-        this(file, DEFAULT_ENCODING, false);
+        this(file, DEFAULT_CHARSET, false);
     }
 
-    public TextFileWriter(File file, String encoding) throws IOException {
-        this(file, encoding, false);
+    public TextFileWriter(File file, Charset charset) throws IOException {
+        this(file, charset, false);
     }
 
     public TextFileWriter(File file, boolean append) throws IOException {
-        this(file, DEFAULT_ENCODING, append);
+        this(file, DEFAULT_CHARSET, append);
     }
 
-    public TextFileWriter(File file, String encoding, boolean append) throws IOException {
-        writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, append), encoding));
+    public TextFileWriter(File file, Charset charset, boolean append) throws IOException {
+        writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file, append), charset));
     }
 
     public void write(String str) throws IOException {
